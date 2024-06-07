@@ -7,7 +7,7 @@ const ImageUpload = (props) => {
     className = "",
     progress = 0,
     image = "",
-    handleDeleteImage = () => {},
+    handleDeleteImage = () => { },
     ...rest
   } = props;
   return (
@@ -18,7 +18,7 @@ const ImageUpload = (props) => {
         type="file"
         name={name}
         className="hidden-input"
-        onChange={() => {}}
+        onChange={() => { }}
         {...rest}
       />
       {progress !== 0 && !image && (

@@ -1,1 +1,2 @@
-export const imgbbAPI = `https://api.imgbb.com/1/upload?key=${process.env.REACT_APP_IMGBB_KEY}`;
+export const imgbbAPI =
+  "https://api.imgbb.com/1/upload?key=5a696fcbb8ed78b24298075df41fd1d8";

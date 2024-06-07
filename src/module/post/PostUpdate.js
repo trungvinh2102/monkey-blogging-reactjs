@@ -20,7 +20,7 @@ import { Input } from "../../components/input";
 import ImageUpload from "../../components/image/ImageUpload";
 import { Dropdown } from "../../components/dropdown";
 import Toggle from "../../components/toggle/Toggle";
-import { postStatus, roleStatus, userStatus } from "../../utils/constants";
+import { postStatus, userStatus } from "../../utils/constants";
 import { Radio } from "../../components/checkbox";
 import { Button } from "../../components/button";
 Quill.register("modules/imageUploader", ImageUploader);
@@ -103,7 +103,7 @@ const PostUpdate = () => {
   };
   const updatePostHandler = async (values) => {
     if (!isValid) return;
-    if (userInfo?.role !== roleStatus.ADMIN) {
+    if (userInfo?.role !== userStatus.ADMIN) {
       Swal.fire("Failed", "You have no right to do this action", "warning");
       return;
     }
@@ -128,11 +128,8 @@ const PostUpdate = () => {
         ["link", "image"],
       ],
       imageUploader: {
-        // imgbbAPI
         upload: async (file) => {
-          console.log("upload: ~ file", file);
           const bodyFormData = new FormData();
-          console.log("upload: ~ bodyFormData", bodyFormData);
           bodyFormData.append("image", file);
           const response = await axios({
             method: "post",
@@ -272,5 +269,6 @@ const PostUpdate = () => {
     </>
   );
 };
+
 
 export default PostUpdate;

@@ -10,7 +10,7 @@ const InputStyles = styled.div`
     width: 100%;
     padding: 20px;
     padding: ${(props) =>
-      props.hasIcon ? "16px 20px 16px 20px" : "16px 20px"};
+    props.hasIcon ? "16px 20px 16px 20px" : "16px 20px"};
     border: 1px solid ${(props) => props.theme.primary};
     background-color: ${(props) => props.theme.white};
     border-radius: 8px;
