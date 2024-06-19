@@ -32,6 +32,7 @@ const PostManage = () => {
 
   // state
   const [filter, setFilter] = useState(undefined);
+  console.log("PostManage ~ filter:", filter);
   const [total, setTotal] = useState(0);
   const [postList, setPostList] = useState([]);
   const [nextDoc, setNextDoc] = useState();
@@ -81,19 +82,19 @@ const PostManage = () => {
   const handleDeletePost = (docId) => {
     const colRef = doc(db, "posts", docId);
     Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      title: "Bạn có muốn xóa bài viết này không?",
+      text: "Khi đã xóa bạn không thể hoàn tác lại!",
       icon: "warning",
       showCancelButton: true,
+      cancelButtonText: "Hủy",
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Xóa",
     }).then(async (result) => {
       if (result.isConfirmed) {
         await deleteDoc(colRef);
         Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
+          title: "Xóa bài viết thành công!",
           icon: "success",
         });
       }
@@ -169,13 +170,13 @@ const PostManage = () => {
   return (
     <>
       <DashboardHeading
-        title="All posts"
-        desc="Manage all posts"
+        title="Bài viết"
+        desc="Quản lí bài viết"
       ></DashboardHeading>
       <div className="flex justify-end gap-5 mb-10">
         <div className="w-full max-w-[200px]">
           <Dropdown>
-            <Dropdown.Select placeholder="Category"></Dropdown.Select>
+            <Dropdown.Select placeholder="Danh mục"></Dropdown.Select>
             <Dropdown.List>
               {/* call and display */}
               {categories.length > 0 &&
@@ -190,7 +191,7 @@ const PostManage = () => {
             onChange={handleSearchPost}
             type="text"
             className="w-full p-4 border border-gray-300 border-solid rounded-lg"
-            placeholder="Search post..."
+            placeholder="Tìm kiếm..."
           />
         </div>
       </div>
@@ -198,11 +199,11 @@ const PostManage = () => {
         <thead>
           <tr>
             <th>Id</th>
-            <th>Post</th>
-            <th>Category</th>
-            <th>Author</th>
-            <th>Status</th>
-            <th>Actions</th>
+            <th>Bài viết</th>
+            <th>Danh mục</th>
+            <th>Tác giả</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
           </tr>
         </thead>
         <tbody>
@@ -271,7 +272,7 @@ const PostManage = () => {
             disabled={isSubmitting}
             isLoading={isSubmitting}
           >
-            Load more
+            Xem thêm
           </Button>
         </div>
       )}

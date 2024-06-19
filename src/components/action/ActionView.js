@@ -1,6 +1,6 @@
 import React from "react";
 
-const ActionView = ({ onClick = () => {} }) => {
+const ActionView = ({ onClick = () => { } }) => {
   return (
     <span
       className="flex items-center justify-center w-10 h-10 border border-gray-200 rounded cursor-pointer"

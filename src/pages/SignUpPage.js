@@ -17,15 +17,15 @@ import { roleStatus, userStatus } from "../utils/constants";
 import InputTogglePassword from "../components/input/InputTogglePassword";
 
 const schema = yup.object({
-  fullname: yup.string().required("Please enter your fullname"),
+  fullname: yup.string().required("Vui lòng nhập đầy đủ họ và tên"),
   email: yup
     .string()
-    .email("Please enter valid email address")
-    .required("Please enter your email address"),
+    .email("Vui lòng nhập địa chỉ email hợp lệ")
+    .required("Vui lòng nhập địa chỉ email"),
   password: yup
     .string()
-    .min(8, "Please enter 8 characters or larger")
-    .required("Please enter your password"),
+    .min(8, "Vui lòng nhập 8 ký tự trở lên")
+    .required("Vui lòng nhập mật khẩu"),
 });
 
 const SignUpPage = () => {
@@ -61,17 +61,9 @@ const SignUpPage = () => {
       role: userStatus.USER,
       createdAt: serverTimestamp(),
     });
-    toast.success("Register Succesfully!!!");
-    navigate("/");
+    toast.success("Đăng kí tài khoản thành công!!!");
+    navigate("/sign-in");
   };
-  useEffect(() => {
-    const arrayError = Object.values(errors);
-    if (arrayError.length > 0) {
-      toast.error(arrayError[0]?.message, {
-        pauseOnHover: false,
-      });
-    }
-  }, [errors]);
   useEffect(() => {
     document.title = "Register Page";
   }, []);
@@ -83,33 +75,35 @@ const SignUpPage = () => {
         onSubmit={handleSubmit(handleSubmitForm)}
       >
         <Field>
-          <Label htmlFor="fullname">Fullname</Label>
+          <Label htmlFor="fullname">Họ và tên</Label>
           <Input
             type="text"
             id="fullname"
             name="fullname"
-            placeholder="Please enter your fullname"
+            placeholder="Nhập họ và tên"
             control={control}
+            error={errors.fullname?.message}
           />
         </Field>
 
         <Field>
-          <Label htmlFor="email">Email address</Label>
+          <Label htmlFor="email">Email</Label>
           <Input
             type="email"
             id="email"
             name="email"
-            placeholder="Please enter your email address"
+            placeholder="Nhập email"
             control={control}
+            error={errors.email?.message}
           />
         </Field>
         <Field>
-          <Label htmlFor="password">Password</Label>
-          <InputTogglePassword control={control}></InputTogglePassword>
+          <Label htmlFor="password">Mật khẩu</Label>
+          <InputTogglePassword error={errors.password?.message} control={control}></InputTogglePassword>
         </Field>
         <div className="have-account">
-          Do you already have an accout? &nbsp;
-          <NavLink to={"/sign-in"}>Login</NavLink>
+          Bạn đã có tài khoản? &nbsp;
+          <NavLink to={"/sign-in"}>Đăng nhập</NavLink>
         </div>
 
         <Button
@@ -123,7 +117,7 @@ const SignUpPage = () => {
           isLoading={isSubmitting}
           disabled={isSubmitting}
         >
-          Sign Up
+          Đăng kí
         </Button>
       </form>
     </AuthenticationPage>

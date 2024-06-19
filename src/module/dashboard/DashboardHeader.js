@@ -48,7 +48,7 @@ const DashboardHeader = () => {
       </NavLink>
       <div className="header-right">
         <Button to="/manage/add-post" className="header-button" height="52px">
-          Write new post
+          Thêm bài viết
         </Button>
         <Link to={`/profile?`} className="header-avatar">
           <img src={userInfo?.avatar} alt="" />

@@ -6,7 +6,7 @@ import axios from "axios";
 import slugify from "slugify";
 import Swal from "sweetalert2";
 import { useAuth } from "../../contexts/auth-context";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import useFirebaseImage from "../../hooks/useFirebaseImage";
@@ -20,12 +20,14 @@ import { Input } from "../../components/input";
 import ImageUpload from "../../components/image/ImageUpload";
 import { Dropdown } from "../../components/dropdown";
 import Toggle from "../../components/toggle/Toggle";
-import { postStatus, userStatus } from "../../utils/constants";
+import { postStatus, roleStatus, userStatus } from "../../utils/constants";
 import { Radio } from "../../components/checkbox";
 import { Button } from "../../components/button";
 Quill.register("modules/imageUploader", ImageUploader);
 
+
 const PostUpdate = () => {
+  const navigate = useNavigate()
   const { userInfo } = useAuth();
   const [params] = useSearchParams();
   const postId = params.get("id");
@@ -103,8 +105,8 @@ const PostUpdate = () => {
   };
   const updatePostHandler = async (values) => {
     if (!isValid) return;
-    if (userInfo?.role !== userStatus.ADMIN) {
-      Swal.fire("Failed", "You have no right to do this action", "warning");
+    if (userInfo?.role !== roleStatus.ADMIN) {
+      Swal.fire("Chỉnh sửa không thành công!", "Bạn không có quyền thực hiện hành động này", "warning");
       return;
     }
     const docRef = doc(db, "posts", postId);
@@ -115,7 +117,8 @@ const PostUpdate = () => {
       image,
       content,
     });
-    toast.success("Update post successfully!");
+    toast.success("Chỉnh sửa bài viết thành công!");
+    navigate('/manage/posts')
   };
   const modules = useMemo(
     () => ({
@@ -125,6 +128,7 @@ const PostUpdate = () => {
         [{ header: 1 }, { header: 2 }], // custom button values
         [{ list: "ordered" }, { list: "bullet" }],
         [{ header: [1, 2, 3, 4, 5, 6, false] }],
+        [{ size: ["small", false, "large", "huge"] }],
         ["link", "image"],
       ],
       imageUploader: {
@@ -149,16 +153,16 @@ const PostUpdate = () => {
   return (
     <>
       <DashboardHeading
-        title="Update post"
-        desc="Update post content"
+        title="Chỉnh sửa bài viết"
+        desc="Chỉnh sửa nội dung bài viết"
       ></DashboardHeading>
       <form onSubmit={handleSubmit(updatePostHandler)}>
         <div className="form-layout">
           <Field>
-            <Label>Title</Label>
+            <Label>Tiêu đề</Label>
             <Input
               control={control}
-              placeholder="Enter your title"
+              placeholder="Nhập tiêu đề"
               name="title"
               required
             ></Input>
@@ -167,14 +171,14 @@ const PostUpdate = () => {
             <Label>Slug</Label>
             <Input
               control={control}
-              placeholder="Enter your slug"
+              placeholder="Nhập slug"
               name="slug"
             ></Input>
           </Field>
         </div>
         <div className="form-layout">
           <Field>
-            <Label>Image</Label>
+            <Label>Hình ảnh</Label>
             <ImageUpload
               onChange={handleSelectImage}
               handleDeleteImage={handleDeleteImage}
@@ -184,9 +188,9 @@ const PostUpdate = () => {
             ></ImageUpload>
           </Field>
           <Field>
-            <Label>Category</Label>
+            <Label>Danh mục</Label>
             <Dropdown>
-              <Dropdown.Select placeholder="Select the category"></Dropdown.Select>
+              <Dropdown.Select placeholder="Lựa chọn danh mục..."></Dropdown.Select>
               <Dropdown.List>
                 {categories.length > 0 &&
                   categories.map((item) => (
@@ -208,7 +212,7 @@ const PostUpdate = () => {
         </div>
         <div className="mb-10">
           <Field>
-            <Label>Content</Label>
+            <Label>Nội dung</Label>
             <div className="w-full entry-content">
               <ReactQuill
                 modules={modules}
@@ -221,14 +225,14 @@ const PostUpdate = () => {
         </div>
         <div className="form-layout">
           <Field>
-            <Label>Feature post</Label>
+            <Label>Bài viết nổi bật</Label>
             <Toggle
               on={watchHot === true}
               onClick={() => setValue("hot", !watchHot)}
             ></Toggle>
           </Field>
           <Field>
-            <Label>Status</Label>
+            <Label>Trạng thái</Label>
             <FieldCheckboxes>
               <Radio
                 name="status"
@@ -263,7 +267,7 @@ const PostUpdate = () => {
           isLoading={isSubmitting}
           disabled={isSubmitting}
         >
-          Update post
+          Chỉnh sửa
         </Button>
       </form>
     </>

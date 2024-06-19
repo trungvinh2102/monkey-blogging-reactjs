@@ -95,19 +95,19 @@ const UserTable = () => {
   const handleDeleteUser = (docId) => {
     const colRef = doc(db, "users", docId);
     Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      title: "Bạn có muốn xóa người dùng này không?",
+      text: "Khi đã xóa bạn không thể hoàn tác lại!",
       icon: "warning",
       showCancelButton: true,
+      cancelButtonText: "Hủy",
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Xóa",
     }).then(async (result) => {
       if (result.isConfirmed) {
         await deleteDoc(colRef);
         Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
+          title: "Xóa bài viết thành công!",
           icon: "success",
         });
       }
@@ -143,12 +143,12 @@ const UserTable = () => {
         <thead>
           <tr>
             <th>Id</th>
-            <th>Info</th>
+            <th>Thông tin người dùng</th>
             <th>Username</th>
-            <th>Email adress</th>
-            <th>Status</th>
-            <th>Role</th>
-            <th>Action</th>
+            <th>Email</th>
+            <th>Trạng thái</th>
+            <th>Quyền</th>
+            <th>Hàng động</th>
           </tr>
         </thead>
         <tbody>
@@ -207,7 +207,7 @@ const UserTable = () => {
             isLoading={isSubmitting}
             onClick={handleLoadMoreUser}
           >
-            Load more
+            Xem thêm
           </Button>
         </div>
       )}

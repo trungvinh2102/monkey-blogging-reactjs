@@ -46,10 +46,10 @@ const CategoryManage = () => {
       const colRef = collection(db, "categories");
       const queries = filter
         ? query(
-            colRef,
-            where("name", ">=", filter),
-            where("name", "<=", filter + "utf8")
-          )
+          colRef,
+          where("name", ">=", filter),
+          where("name", "<=", filter + "utf8")
+        )
         : query(colRef, limit(CATEGORY_PER_PAGE));
       const documentSnapshots = await getDocs(queries);
       const lastVisible =
@@ -79,19 +79,19 @@ const CategoryManage = () => {
   const handleDeleteCategory = (docId) => {
     const colRef = doc(db, "categories", docId);
     Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      title: "Bạn có muốn xóa danh mục này không?",
+      text: "Khi đã xóa bạn không thể hoàn tác lại!",
       icon: "warning",
       showCancelButton: true,
+      cancelButtonText: "Hủy",
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Xóa",
     }).then(async (result) => {
       if (result.isConfirmed) {
         await deleteDoc(colRef);
         Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
+          title: "Xóa bài viết thành công!",
           icon: "success",
         });
       }
@@ -126,16 +126,16 @@ const CategoryManage = () => {
 
   return (
     <div>
-      <DashboardHeading title="Categories" desc="Manage your category">
+      <DashboardHeading title="Danh mục" desc="Quản lí danh mục">
         <Button type="button" to="/manage/add-category" kind="ghost">
-          Create new category
+          Thêm danh mục
         </Button>
       </DashboardHeading>
       <div className="mb-10 ml-auto w-[220px]">
         <input
           className="px-5 py-4 border rounded-lg border-primary"
           type="text"
-          placeholder="Search category..."
+          placeholder="Tìm kiếm danh mục..."
           onChange={handleInputFilter}
         />
       </div>
@@ -143,10 +143,10 @@ const CategoryManage = () => {
         <thead>
           <tr>
             <th>Id</th>
-            <th>Name</th>
+            <th>Tên danh mục</th>
             <th>Slug</th>
-            <th>Status</th>
-            <th>Action</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
           </tr>
         </thead>
         <tbody>
@@ -193,7 +193,7 @@ const CategoryManage = () => {
             isLoading={isSubmitting}
             onClick={handleLoadMoreCategory}
           >
-            Load more
+            Xem thêm
           </Button>
         </div>
       )}

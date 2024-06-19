@@ -136,7 +136,7 @@ const PostAddNew = () => {
         createdAt: serverTimestamp(),
       });
       // display notification with library react-toastify
-      toast.success("Create new post successfully!");
+      toast.success("Thêm bài viết thành công!");
       // reset form to default value
       reset({
         title: "",
@@ -151,7 +151,7 @@ const PostAddNew = () => {
       setSelectCategory({});
     } catch (error) {
       console.log(error);
-      toast.error("Creating a new post failed!");
+      toast.error("Thêm bài viết mới không thành công!");
     }
   };
 
@@ -163,18 +163,18 @@ const PostAddNew = () => {
   return (
     <>
       {/* title */}
-      <DashboardHeading title="Add post" desc="Add new post"></DashboardHeading>
+      <DashboardHeading title="Thêm bài viết" desc="Thêm bài viết"></DashboardHeading>
 
       {/* form */}
       <>
         <form onSubmit={handleSubmit(handleAddPost)} autoComplete="off">
           <div className="form-layout">
             <Field>
-              <Label>Title</Label>
+              <Label>Tiêu đề</Label>
               <Input
                 type="text"
                 control={control}
-                placeholder="Enter your title"
+                placeholder="Nhập tiêu đề"
                 name="title"
                 required
               ></Input>
@@ -184,14 +184,14 @@ const PostAddNew = () => {
               <Input
                 type="text"
                 control={control}
-                placeholder="Enter your slug"
+                placeholder="Nhập slug"
                 name="slug"
               ></Input>
             </Field>
           </div>
           <div className="form-layout">
             <Field>
-              <Label>Images</Label>
+              <Label>Hình ảnh</Label>
               <ImageUpload
                 handleDeleteImage={handleDeleteImage}
                 image={image}
@@ -200,9 +200,9 @@ const PostAddNew = () => {
               ></ImageUpload>
             </Field>
             <Field>
-              <Label>Category</Label>
+              <Label>Danh mục</Label>
               <Dropdown>
-                <Dropdown.Select placeholder="Please select an option"></Dropdown.Select>
+                <Dropdown.Select placeholder="Lựa chọn danh mục..."></Dropdown.Select>
                 <Dropdown.List>
                   {/* call and display */}
                   {categories.length > 0 &&
@@ -226,7 +226,7 @@ const PostAddNew = () => {
           </div>
           <div className="form-layout">
             <Field>
-              <Label>Feature post</Label>
+              <Label>Bài viết nổi bật</Label>
               <Toggle
                 on={watchHot === true}
                 onClick={() => {
@@ -235,7 +235,7 @@ const PostAddNew = () => {
               ></Toggle>
             </Field>
             <Field>
-              <Label>Status</Label>
+              <Label>Trạng thái bài viết</Label>
               <FieldCheckboxes>
                 <Radio
                   name="status"
@@ -256,8 +256,8 @@ const PostAddNew = () => {
                 <Radio
                   name="status"
                   control={control}
-                  checked={Number(watchStatus) === postStatus.REJECT}
-                  value={postStatus.REJECT}
+                  checked={Number(watchStatus) === postStatus.REJECTED}
+                  value={postStatus.REJECTED}
                 >
                   Reject
                 </Radio>
@@ -270,7 +270,7 @@ const PostAddNew = () => {
             disabled={isSubmitting}
             isLoading={isSubmitting}
           >
-            Add new post
+            Thêm bài viết
           </Button>
         </form>
       </>

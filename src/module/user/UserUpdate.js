@@ -87,8 +87,8 @@ const UserUpdate = () => {
   return (
     <div>
       <DashboardHeading
-        title="Update user"
-        desc="Update user information"
+        title="Người dùng"
+        desc="Chỉnh sửa thông tin người dùng"
       ></DashboardHeading>
       <div className="w-[200px] h-[200px] rounded-full mx-auto mb-10">
         <ImageUpload
@@ -102,11 +102,11 @@ const UserUpdate = () => {
       <form autoComplete="off" onSubmit={handleSubmit(handleUpdateUser)}>
         <div className="form-layout">
           <Field>
-            <Label>Fullname</Label>
+            <Label>Họ và tên</Label>
             <Input
               type="text"
               name="fullname"
-              placeholder="Enter your fullname"
+              placeholder="Nhập họ và tên"
               control={control}
             ></Input>
           </Field>
@@ -115,7 +115,7 @@ const UserUpdate = () => {
             <Input
               type="text"
               name="username"
-              placeholder="Enter your username"
+              placeholder="Nhập username"
               control={control}
             ></Input>
           </Field>
@@ -125,19 +125,19 @@ const UserUpdate = () => {
             <Label>Email</Label>
             <Input
               name="email"
-              placeholder="Enter your email"
+              placeholder="Nhập email"
               control={control}
               type="email"
             ></Input>
           </Field>
           <Field>
-            <Label>Password</Label>
+            <Label>Mật khẩu</Label>
             <InputTogglePassword control={control}></InputTogglePassword>
           </Field>
         </div>
         <div className="form-layout">
           <Field>
-            <Label>Status</Label>
+            <Label>Trạng thái</Label>
             <FieldCheckboxes>
               <Radio
                 name="status"
@@ -166,7 +166,7 @@ const UserUpdate = () => {
             </FieldCheckboxes>
           </Field>
           <Field>
-            <Label>Role</Label>
+            <Label>Phân quyền</Label>
             <FieldCheckboxes>
               <Radio
                 name="role"
@@ -205,7 +205,7 @@ const UserUpdate = () => {
         </div>
         <div className="form-layout">
           <Field>
-            <Label>Decription</Label>
+            <Label>Chú thích</Label>
             <Textarea name="description" control={control}></Textarea>
           </Field>
         </div>
@@ -216,7 +216,7 @@ const UserUpdate = () => {
           disabled={isSubmitting}
           isLoading={isSubmitting}
         >
-          Update user
+          Chỉnh sửa người dùng
         </Button>
       </form>
     </div>

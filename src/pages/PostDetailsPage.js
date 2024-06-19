@@ -11,7 +11,6 @@ import { db } from "../firebase-app/firebase-config";
 import parse from "html-react-parser";
 import UserBox from "../module/user/UserBox";
 import { PostRelated } from "../module/post/PostRelated";
-
 const PostDetailsPageStyles = styled.div`
   padding-bottom: 100px;
   .post {
@@ -20,7 +19,7 @@ const PostDetailsPageStyles = styled.div`
       justify-content: space-between;
       align-items: center;
       gap: 40px;
-      margin: 40px 0;
+      margin: 20px 0;
     }
     &-feature {
       width: 100%;
@@ -96,13 +95,14 @@ const PostDetailsPageStyles = styled.div`
         height: auto;
       }
     }
+   
   }
 `;
 
 const PostDetailsPage = () => {
   const { slug } = useParams();
 
-  const [postInfo, setPostInfo] = useState([]);
+  const [postInfo, setPostInfo] = useState({});
 
   useEffect(() => {
     async function fetchData() {
@@ -124,7 +124,8 @@ const PostDetailsPage = () => {
   const { user } = postInfo;
 
   if (!slug) return <PageNotFound></PageNotFound>;
-  if (!postInfo.title) return;
+  if (!postInfo.title) return null;
+
   return (
     <PostDetailsPageStyles>
       <Layout>
@@ -147,6 +148,7 @@ const PostDetailsPage = () => {
           </div>
           <div className="post-content">
             <div className="entry-content">
+              {/* Sử dụng parse để hiển thị nội dung HTML từ Firebase */}
               {parse(postInfo?.content || "")}
             </div>
             <UserBox userId={user.id}></UserBox>

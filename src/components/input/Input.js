@@ -29,6 +29,14 @@ const InputStyles = styled.div`
     right: 20px;
     top: 50%;
     transform: translateY(-50%);
+    
+  }
+  .input-icon__error {
+    position: absolute;
+    right: 20px;
+    top: 35%;
+    transform: translateY(-40%);
+    
   }
 `;
 
@@ -44,6 +52,7 @@ const Input = ({
   placeholder = "",
   control,
   value = "",
+  error = "",
   children,
   ...props
 }) => {
@@ -62,7 +71,12 @@ const Input = ({
         {...props}
         className="input"
       />
-      {children ? <div className="input-icon">{children}</div> : null}
+      {error.length > 0 && (
+        <span className="text-red-500 ">
+          {error}
+        </span>
+      )}
+      {children && error.length > 0 ? <div className="input-icon__error">{children}</div> : <div className="input-icon">{children}</div>}
     </InputStyles>
   );
 };

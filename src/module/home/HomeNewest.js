@@ -67,7 +67,7 @@ const HomeNewest = () => {
   return (
     <HomeNewestStyles className="home-block">
       <div className="container">
-        <Heading>Latest posts</Heading>
+        <Heading>Bài viết mới nhất</Heading>
         <div className="layout">
           <PostNewestLarge data={first}></PostNewestLarge>
           <div className="sidebar">

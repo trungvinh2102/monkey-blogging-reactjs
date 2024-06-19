@@ -1,71 +1,80 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../components/layout/Layout";
-import Heading from "../components/layout/Heading";
-import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { collection, getDocs, query, where, limit, startAfter } from "firebase/firestore";
 import { db } from "../firebase-app/firebase-config";
 import { postStatus } from "../utils/constants";
 import PostItem from "../module/post/PostItem";
+import { IconSearch } from "../components/icon";
+import { debounce } from "lodash";
+import { Button } from "../components/button";
 
 const BlogPage = () => {
-  // state
   const [posts, setPosts] = useState([]);
+  console.log("BlogPage ~ posts:", posts);
+  const [lastVisible, setLastVisible] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [searchTerm, setSearchTerm] = useState(undefined);
 
-  //
-  useEffect(() => {
-    async function fetchData() {
-      const docRef = query(
+  const fetchData = async (search = "", isLoadMore = false) => {
+    setIsSubmitting(true);
+    let docRef;
+    if (search) {
+      docRef = query(
         collection(db, "posts"),
-        where("status", "==", postStatus.APPROVED)
+        where("status", "==", postStatus.APPROVED),
+        where("title", ">=", search),
+        where("title", "<=", search + "uf8ff"),
+        limit(1)
       );
-      const results = [];
-      onSnapshot(docRef, (snapshot) => {
-        snapshot.forEach((doc) => {
-          results.push({
-            id: doc.id,
-            ...doc.data(),
-          });
-        });
-        setPosts(results);
-      });
+    } else {
+      docRef = query(
+        collection(db, "posts"),
+        where("status", "==", postStatus.APPROVED),
+        isLoadMore ? startAfter(lastVisible) : limit(3)
+      );
     }
-    fetchData();
-  }, []);
+    const documentSnapshots = await getDocs(docRef);
+    if (!documentSnapshots.empty) {
+      const lastVisibleDoc = documentSnapshots.docs[documentSnapshots.docs.length - 1];
+      setLastVisible(lastVisibleDoc);
+      const results = documentSnapshots.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      if (isLoadMore) {
+        setPosts(prevPosts => [...prevPosts, ...results]);
+      } else {
+        setPosts(results);
+      }
+      setHasMore(documentSnapshots.docs.length === 3);
+    } else {
+      setHasMore(false);
+    }
+    setIsSubmitting(false);
+  };
+
+  useEffect(() => {
+    fetchData(searchTerm);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchTerm]);
+
+  const handleLoadMorePost = async () => {
+    if (!lastVisible) return;
+    fetchData(searchTerm, true);
+  };
+
+  const handleSearchPost = debounce((e) => {
+    setSearchTerm(e.target.value);
+  }, 500);
 
   return (
     <Layout>
-      <Heading></Heading>
       <div className="container">
         <div className="flex items-center justify-center max-w-[500px] mx-auto mb-14 border px-6 py-4 rounded-lg border-gray-400 outline-none hover:border-primary">
-          <input type="text" className="w-full" placeholder="Search posts..." />
+          <input onChange={handleSearchPost} type="text" className="w-full" placeholder="Tìm kiếm..." />
           <span className="search-icon">
-            <svg
-              width="18"
-              height="17"
-              viewBox="0 0 18 17"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <ellipse
-                cx="7.66669"
-                cy="7.05161"
-                rx="6.66669"
-                ry="6.05161"
-                stroke="#999999"
-                strokeWidth="1.5"
-              />
-              <path
-                d="M17.0001 15.5237L15.2223 13.9099L14.3334 13.103L12.5557 11.4893"
-                stroke="#999999"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-              <path
-                d="M11.6665 12.2964C12.9671 12.1544 13.3706 11.8067 13.4443 10.6826"
-                stroke="#999999"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-            </svg>
+            <IconSearch></IconSearch>
           </span>
         </div>
         <div className="mt-8"></div>
@@ -75,7 +84,22 @@ const BlogPage = () => {
               <PostItem key={post.id} data={post}></PostItem>
             ))}
         </div>
+        {hasMore && !searchTerm && (
+          <div className="mt-10 text-center">
+            <Button
+              kind="primary"
+              className="mx-auto w-[200px]"
+              type="submit"
+              onClick={handleLoadMorePost}
+              disabled={isSubmitting}
+              isLoading={isSubmitting}
+            >
+              Xem thêm
+            </Button>
+          </div>
+        )}
       </div>
+      <div className="mb-14"></div>
     </Layout>
   );
 };

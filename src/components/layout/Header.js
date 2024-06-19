@@ -6,15 +6,15 @@ import { Button } from "../button";
 const menuLinks = [
   {
     url: "/",
-    title: "Home",
+    title: "Trang chủ",
   },
   {
     url: "/blog",
-    title: "Blog",
+    title: "Bài viết",
   },
   {
     url: "/contact",
-    title: "Contact",
+    title: "Liên hệ",
   },
 ];
 
@@ -120,7 +120,7 @@ const Header = () => {
               className="header-button"
               to="/sign-in"
             >
-              Login
+              Đăng nhập
             </Button>
           ) : (
             <div className="header-auth">

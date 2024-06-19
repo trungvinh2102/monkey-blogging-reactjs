@@ -42,7 +42,7 @@ const HomeFeature = () => {
   return (
     <HomeFeatureStyles className="home-block">
       <div className="container">
-        <Heading>Featured posts</Heading>
+        <Heading>Bài viết nổi bật</Heading>
         <div className="grid-layout">
           {posts.map((post) => (
             <PostFeatureItem key={post.id} data={post}></PostFeatureItem>

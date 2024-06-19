@@ -76,7 +76,7 @@ const UserAddNew = () => {
         createdAt: serverTimestamp(),
       });
       toast.success(
-        `Create new user with email: ${values.email} successfully!`
+        `Thêm người dùng bằng email: ${values.email} thành công!`
       );
       // reset form to default value
       reset({
@@ -98,8 +98,8 @@ const UserAddNew = () => {
     <>
       {/* heading */}
       <DashboardHeading
-        title="New user"
-        desc="Add new user to system"
+        title="Người dùng"
+        desc="Thêm người dùng"
       ></DashboardHeading>
       {/* image */}
       <div className="w-[200px] h-[200px] rounded-full mx-auto mb-10">
@@ -115,11 +115,11 @@ const UserAddNew = () => {
       <form autoComplete="off" onSubmit={handleSubmit(handleAddNewUser)}>
         <div className="form-layout">
           <Field>
-            <Label>Fullname</Label>
+            <Label>Họ và tên</Label>
             <Input
               type="text"
               name="fullname"
-              placeholder="Enter your fullname"
+              placeholder="Nhập họ và tên"
               control={control}
             ></Input>
           </Field>
@@ -128,7 +128,7 @@ const UserAddNew = () => {
             <Input
               type="text"
               name="username"
-              placeholder="Enter your username"
+              placeholder="Nhập username"
               control={control}
             ></Input>
           </Field>
@@ -138,19 +138,19 @@ const UserAddNew = () => {
             <Label>Email</Label>
             <Input
               name="email"
-              placeholder="Enter your email"
+              placeholder="Nhập email"
               control={control}
               type="email"
             ></Input>
           </Field>
           <Field>
-            <Label>Password</Label>
+            <Label>Mật khẩu</Label>
             <InputTogglePassword control={control}></InputTogglePassword>
           </Field>
         </div>
         <div className="form-layout">
           <Field>
-            <Label>Status</Label>
+            <Label>Trạng thái</Label>
             <FieldCheckboxes>
               <Radio
                 name="status"
@@ -179,7 +179,7 @@ const UserAddNew = () => {
             </FieldCheckboxes>
           </Field>
           <Field>
-            <Label>Role</Label>
+            <Label>Phân quyền</Label>
             <FieldCheckboxes>
               <Radio
                 name="role"

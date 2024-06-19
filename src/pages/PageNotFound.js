@@ -51,14 +51,14 @@ const PageNotFound = () => {
     <PageNotFoundStyles>
       <div className="page-content">
         <img src="/404.png" alt="notfound" className="image" />
-        <h1 className="heading">404 - Looks like you're lost.</h1>
+        <h1 className="heading">404 - Có vẻ như bạn đang bị lạc.</h1>
         <p className="description">
-          Maybe this page used to exist or you just spelled something wrong.
-          Chances are your spelled something wrong, so can you double check the
+          Có thể trang này đã từng tồn tại hoặc bạn vừa viết sai chính tả.
+          Rất có thể bạn viết sai chính tả, vậy bạn có thể kiểm tra lại
           URL?
         </p>
         <button onClick={() => navigate("/")} className="back">
-          Go back
+          Quay lại
         </button>
       </div>
     </PageNotFoundStyles>

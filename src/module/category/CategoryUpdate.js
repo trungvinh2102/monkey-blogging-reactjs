@@ -44,29 +44,29 @@ export const CategoryUpdate = () => {
         slug: slugify(values.name || values.slug, { lower: true }),
         status: Number(values.status),
       });
-      toast.success("Update Category Successfully!");
+      toast.success("Chỉnh sửa danh mục thành công!");
       navigate("/manage/category");
     } catch (error) {
       console.log(error);
-      toast.error("Updating a category failed!");
+      toast.error("Chỉnh sửa danh mục thất bại!");
     }
   };
   if (!categoryId) return null;
   return (
     <div>
       <DashboardHeading
-        title="Update category"
-        desc={`Update category id: ${categoryId}`}
+        title="Chỉnh sửa danh mục"
+        desc={`Danh mục: ${categoryId}`}
       ></DashboardHeading>
       <form autoComplete="off" onSubmit={handleSubmit(handleUpdateCategory)}>
         <div className="form-layout">
           <Field>
-            <Label>Name</Label>
+            <Label>Tên danh mục</Label>
             <Input
               type="text"
               control={control}
               name="name"
-              placeholder="Enter your category name"
+              placeholder="Nhập tên danh mục"
             ></Input>
           </Field>
           <Field>
@@ -75,13 +75,13 @@ export const CategoryUpdate = () => {
               type="text"
               control={control}
               name="slug"
-              placeholder="Enter your slug"
+              placeholder="Nhập slug"
             ></Input>
           </Field>
         </div>
         <div className="form-layout">
           <Field>
-            <Label>Status</Label>
+            <Label>Trạng thái</Label>
             <FieldCheckboxes>
               <Radio
                 name="status"
@@ -109,7 +109,7 @@ export const CategoryUpdate = () => {
           disabled={isSubmitting}
           isLoading={isSubmitting}
         >
-          Update category
+          Chỉnh sửa danh mục
         </Button>
       </form>
     </div>

@@ -10,19 +10,18 @@ import { useAuth } from "../contexts/auth-context";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase-app/firebase-config";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import InputTogglePassword from "../components/input/InputTogglePassword";
 
 const schema = yup.object({
   email: yup
     .string()
-    .email("Please enter valid email address")
-    .required("Please enter your email address"),
+    .email("Vui lòng nhập địa chỉ email hợp lệ")
+    .required("Vui lòng nhập địa chỉ email"),
   password: yup
     .string()
-    .min(8, "Please enter 8 characters or larger")
-    .required("Please enter your password"),
+    .min(8, "Vui lòng nhập 8 ký tự trở lên")
+    .required("Vui lòng nhập mật khẩu"),
 });
 
 const SignInPage = () => {
@@ -34,15 +33,6 @@ const SignInPage = () => {
     mode: "onChange",
     resolver: yupResolver(schema),
   });
-  useEffect(() => {
-    const arrErroes = Object.values(errors);
-    if (arrErroes.length > 0) {
-      toast.error(arrErroes[0]?.message, {
-        pauseOnHover: false,
-        delay: 0,
-      });
-    }
-  }, [errors]);
   const { userInfo } = useAuth();
   const navigate = useNavigate();
   useEffect(() => {
@@ -52,13 +42,17 @@ const SignInPage = () => {
   }, [userInfo]);
   const handleSignIn = async (values) => {
     if (!isValid) return;
-    try {
-      await signInWithEmailAndPassword(auth, values.email, values.password);
-      navigate("/");
-    } catch (error) {
-      if (error.message.includes("wrong-password"))
-        toast.error("It seems your password was wrong");
-    }
+    const auth = getAuth();
+    console.log("handleSignIn ~ auth:", auth);
+    await signInWithEmailAndPassword(auth, values.email, values.password)
+      .then(() => {
+        // Signed in 
+        toast.success("Đăng nhập thành công!")
+      })
+      .catch((error) => {
+        console.error("handleSignIn ~ error:", error);
+        toast.error('Đăng nhập thất bại')
+      });
   };
 
   return (
@@ -69,21 +63,22 @@ const SignInPage = () => {
         autoComplete="off"
       >
         <Field>
-          <Label htmlFor="email">Email address</Label>
+          <Label htmlFor="email">Email</Label>
           <Input
             type="email"
             name="email"
-            placeholder="Enter your email address"
+            placeholder="Nhập email"
             control={control}
+            error={errors.email?.message}
           ></Input>
         </Field>
         <Field>
-          <Label htmlFor="password">Password</Label>
-          <InputTogglePassword control={control}></InputTogglePassword>
+          <Label htmlFor="password">Mật khẩu</Label>
+          <InputTogglePassword control={control} error={errors.password?.message}></InputTogglePassword>
         </Field>
         <div className="have-account">
-          You have not had an account? &nbsp;
-          <NavLink to={"/sign-up"}>Register an account</NavLink>
+          Bạn chưa có tài khoản? &nbsp;
+          <NavLink to={"/sign-up"}>Đăng ký tài khoản</NavLink>
         </div>
         <Button
           kind="linear"
@@ -97,7 +92,7 @@ const SignInPage = () => {
           isLoading={isSubmitting}
           disabled={isSubmitting}
         >
-          Login
+          Đăng nhập
         </Button>
       </form>
     </AuthenticationPage>

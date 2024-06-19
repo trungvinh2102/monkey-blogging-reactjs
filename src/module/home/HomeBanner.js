@@ -4,7 +4,7 @@ import { Button } from "../../components/button";
 
 const HomeBannerStyles = styled.div`
   min-height: 520px;
-  padding: 40px 0;
+  padding: 20px 0;
   .banner {
     background-image: linear-gradient(
       155deg,
@@ -64,13 +64,10 @@ const HomeBanner = () => {
           <div className="banner__content">
             <h1 className="banner__content-title">Monkey Blogging</h1>
             <p className="banner__content-desc">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil
-              deserunt quo deleniti inventore natus beatae alias vero velit
-              doloribus dicta, numquam qui ipsa maiores nobis cupiditate sed
-              minus necessitatibus. Voluptatem?
+              Blog Review đa nền tảng....
             </p>
             <Button type="submit" to="/sign-up" kind="secondary">
-              Get Started
+              Bắt đầu
             </Button>
           </div>
           <div className="banner__img">

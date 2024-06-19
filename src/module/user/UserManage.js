@@ -11,9 +11,9 @@ const UserManage = () => {
   if (userInfo.role !== roleStatus.ADMIN) return null;
   return (
     <div>
-      <DashboardHeading title="Users" desc="Manage your user">
+      <DashboardHeading title="Người dùng" desc="Quản lí người dùng">
         <Button type="button" to="/manage/add-user" kind="ghost">
-          Create new user
+          Thêm người dùng
         </Button>
       </DashboardHeading>
       <UserTable></UserTable>

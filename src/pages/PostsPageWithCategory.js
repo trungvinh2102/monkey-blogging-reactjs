@@ -35,7 +35,7 @@ const PostsPageWithCategory = () => {
   return (
     <Layout>
       <div className="container">
-        <div className="mt-8">
+        <div className="mt-5">
           <Heading>Danh mục {params.slug}</Heading>
           <div className="grid-layout grid-layout--primary">
             {posts.length > 0 &&
