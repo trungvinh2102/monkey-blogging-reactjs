@@ -64,7 +64,7 @@ const HomeBanner = () => {
           <div className="banner__content">
             <h1 className="banner__content-title">Monkey Blogging</h1>
             <p className="banner__content-desc">
-              Blog Review đa nền tảng....
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa magni nihil reiciendis laborum quis itaque quas repellat iusto? Tempore ut autem illum, quo nisi rem tempora ipsa dolorum soluta consequuntur!
             </p>
             <Button type="submit" to="/sign-up" kind="secondary">
               Bắt đầu
