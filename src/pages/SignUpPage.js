@@ -57,8 +57,8 @@ const SignUpPage = () => {
       username: slugify(values.fullname, { lower: true }),
       avatar:
         "https://images.unsplash.com/photo-1511367461989-f85a21fda167?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      status: userStatus.ACTIVE,
-      role: userStatus.USER,
+      status: Number(userStatus.ACTIVE),
+      role: Number(userStatus.USER),
       createdAt: serverTimestamp(),
     });
     toast.success("Đăng kí tài khoản thành công!!!");
@@ -99,7 +99,10 @@ const SignUpPage = () => {
         </Field>
         <Field>
           <Label htmlFor="password">Mật khẩu</Label>
-          <InputTogglePassword error={errors.password?.message} control={control}></InputTogglePassword>
+          <InputTogglePassword
+            error={errors.password?.message}
+            control={control}
+          ></InputTogglePassword>
         </Field>
         <div className="have-account">
           Bạn đã có tài khoản? &nbsp;
