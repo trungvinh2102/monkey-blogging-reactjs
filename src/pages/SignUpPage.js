@@ -26,6 +26,11 @@ const schema = yup.object({
     .string()
     .min(8, "Vui lòng nhập 8 ký tự trở lên")
     .required("Vui lòng nhập mật khẩu"),
+  cpassword: yup
+    .string()
+    .min(8, "Vui lòng nhập 8 ký tự trở lên")
+    .required("Vui lòng nhập mật khẩu")
+    .oneOf([yup.ref("password")], "Mật khẩu không khớp"),
 });
 
 const SignUpPage = () => {
@@ -34,8 +39,11 @@ const SignUpPage = () => {
   const {
     control,
     handleSubmit,
+    watch,
     formState: { errors, isValid, isSubmitting },
   } = useForm({ mode: "onChange", resolver: yupResolver(schema) });
+
+  const password = watch("password", "");
 
   const handleSubmitForm = async (values) => {
     if (!isValid) return;
@@ -58,7 +66,7 @@ const SignUpPage = () => {
       avatar:
         "https://images.unsplash.com/photo-1511367461989-f85a21fda167?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       status: Number(userStatus.ACTIVE),
-      role: Number(userStatus.USER),
+      role: Number(roleStatus.USER),
       createdAt: serverTimestamp(),
     });
     toast.success("Đăng kí tài khoản thành công!!!");
@@ -104,11 +112,21 @@ const SignUpPage = () => {
             control={control}
           ></InputTogglePassword>
         </Field>
+
+        {password && (
+          <Field>
+            <Label htmlFor="cpassword">Nhập lại mật khẩu</Label>
+            <InputTogglePassword
+              error={errors.cpassword?.message}
+              control={control}
+              name="cpassword"
+            ></InputTogglePassword>
+          </Field>
+        )}
         <div className="have-account">
           Bạn đã có tài khoản? &nbsp;
           <NavLink to={"/sign-in"}>Đăng nhập</NavLink>
         </div>
-
         <Button
           kind="linear"
           style={{

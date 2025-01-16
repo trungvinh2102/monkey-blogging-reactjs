@@ -24,7 +24,7 @@ import { postStatus, roleStatus, userStatus } from "../../utils/constants";
 import { LabelStatus } from "../../components/label";
 import { useAuth } from "../../contexts/auth-context";
 
-const POST_PER_PAGE = 2;
+const POST_PER_PAGE = 10;
 
 const PostManage = () => {
   //
@@ -49,10 +49,10 @@ const PostManage = () => {
       const colRef = collection(db, "posts");
       const queries = filter
         ? query(
-          colRef,
-          where("title", ">=", filter),
-          where("title", "<=", filter + "utf8")
-        )
+            colRef,
+            where("title", ">=", filter),
+            where("title", "<=", filter + "utf8")
+          )
         : query(colRef, limit(POST_PER_PAGE));
       const documentSnapshots = await getDocs(queries);
       // Get the last visible document
@@ -82,19 +82,19 @@ const PostManage = () => {
   const handleDeletePost = (docId) => {
     const colRef = doc(db, "posts", docId);
     Swal.fire({
-      title: "Bạn có muốn xóa bài viết này không?",
-      text: "Khi đã xóa bạn không thể hoàn tác lại!",
+      title: "Do you want to delete this post??",
+      text: "Once deleted you cannot undo it.!",
       icon: "warning",
       showCancelButton: true,
-      cancelButtonText: "Hủy",
+      cancelButtonText: "Cancel",
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Xóa",
+      confirmButtonText: "Delete",
     }).then(async (result) => {
       if (result.isConfirmed) {
         await deleteDoc(colRef);
         Swal.fire({
-          title: "Xóa bài viết thành công!",
+          title: "Delete post successfully!",
           icon: "success",
         });
       }
@@ -165,18 +165,15 @@ const PostManage = () => {
 
   //
   const { userInfo } = useAuth();
-  if (userInfo.role !== roleStatus.ADMIN) return null;
+  if (Number(userInfo.role) !== roleStatus.ADMIN) return null;
 
   return (
     <>
-      <DashboardHeading
-        title="Bài viết"
-        desc="Quản lí bài viết"
-      ></DashboardHeading>
+      <DashboardHeading title="Posts" desc="Post Manager"></DashboardHeading>
       <div className="flex justify-end gap-5 mb-10">
         <div className="w-full max-w-[200px]">
           <Dropdown>
-            <Dropdown.Select placeholder="Danh mục"></Dropdown.Select>
+            <Dropdown.Select placeholder="Category"></Dropdown.Select>
             <Dropdown.List>
               {/* call and display */}
               {categories.length > 0 &&
@@ -191,7 +188,7 @@ const PostManage = () => {
             onChange={handleSearchPost}
             type="text"
             className="w-full p-4 border border-gray-300 border-solid rounded-lg"
-            placeholder="Tìm kiếm..."
+            placeholder="Enter post title..."
           />
         </div>
       </div>
@@ -199,11 +196,11 @@ const PostManage = () => {
         <thead>
           <tr>
             <th>Id</th>
-            <th>Bài viết</th>
-            <th>Danh mục</th>
-            <th>Tác giả</th>
-            <th>Trạng thái</th>
-            <th>Hành động</th>
+            <th>Post</th>
+            <th>Category</th>
+            <th>Author</th>
+            <th>Status</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -272,7 +269,7 @@ const PostManage = () => {
             disabled={isSubmitting}
             isLoading={isSubmitting}
           >
-            Xem thêm
+            See more
           </Button>
         </div>
       )}

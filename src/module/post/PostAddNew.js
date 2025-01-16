@@ -26,7 +26,6 @@ import { useAuth } from "../../contexts/auth-context";
 import { toast } from "react-toastify";
 import DashboardHeading from "../dashboard/DashboardHeading";
 
-
 const PostAddNew = () => {
   // state
   const [categories, setCategories] = useState([]);
@@ -136,7 +135,7 @@ const PostAddNew = () => {
         createdAt: serverTimestamp(),
       });
       // display notification with library react-toastify
-      toast.success("Thêm bài viết thành công!");
+      toast.success("Add post successfully!");
       // reset form to default value
       reset({
         title: "",
@@ -151,7 +150,7 @@ const PostAddNew = () => {
       setSelectCategory({});
     } catch (error) {
       console.log(error);
-      toast.error("Thêm bài viết mới không thành công!");
+      toast.error("Add post unsuccessfully!");
     }
   };
 
@@ -163,18 +162,18 @@ const PostAddNew = () => {
   return (
     <>
       {/* title */}
-      <DashboardHeading title="Thêm bài viết" desc="Thêm bài viết"></DashboardHeading>
+      <DashboardHeading title="Post" desc="Add new post"></DashboardHeading>
 
       {/* form */}
       <>
         <form onSubmit={handleSubmit(handleAddPost)} autoComplete="off">
           <div className="form-layout">
             <Field>
-              <Label>Tiêu đề</Label>
+              <Label>Title</Label>
               <Input
                 type="text"
                 control={control}
-                placeholder="Nhập tiêu đề"
+                placeholder="Enter your title"
                 name="title"
                 required
               ></Input>
@@ -184,14 +183,14 @@ const PostAddNew = () => {
               <Input
                 type="text"
                 control={control}
-                placeholder="Nhập slug"
+                placeholder="Enter your slug"
                 name="slug"
               ></Input>
             </Field>
           </div>
           <div className="form-layout">
             <Field>
-              <Label>Hình ảnh</Label>
+              <Label>Image</Label>
               <ImageUpload
                 handleDeleteImage={handleDeleteImage}
                 image={image}
@@ -200,9 +199,9 @@ const PostAddNew = () => {
               ></ImageUpload>
             </Field>
             <Field>
-              <Label>Danh mục</Label>
+              <Label>Category</Label>
               <Dropdown>
-                <Dropdown.Select placeholder="Lựa chọn danh mục..."></Dropdown.Select>
+                <Dropdown.Select placeholder="Select a category..."></Dropdown.Select>
                 <Dropdown.List>
                   {/* call and display */}
                   {categories.length > 0 &&
@@ -226,7 +225,7 @@ const PostAddNew = () => {
           </div>
           <div className="form-layout">
             <Field>
-              <Label>Bài viết nổi bật</Label>
+              <Label>Featured Post</Label>
               <Toggle
                 on={watchHot === true}
                 onClick={() => {
@@ -235,7 +234,7 @@ const PostAddNew = () => {
               ></Toggle>
             </Field>
             <Field>
-              <Label>Trạng thái bài viết</Label>
+              <Label>Status</Label>
               <FieldCheckboxes>
                 <Radio
                   name="status"
@@ -270,7 +269,7 @@ const PostAddNew = () => {
             disabled={isSubmitting}
             isLoading={isSubmitting}
           >
-            Thêm bài viết
+            Add New Post
           </Button>
         </form>
       </>

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useAuth } from "../../contexts/auth-context";
 import { NavLink } from "react-router-dom";
 import { Button } from "../button";
+import { roleStatus } from "../../utils/constants";
 
 const menuLinks = [
   {
@@ -88,6 +89,8 @@ const HeaderStyles = styled.header`
 `;
 const Header = () => {
   const { userInfo } = useAuth();
+  const navigate =
+    Number(userInfo?.role) === roleStatus.ADMIN ? "/dashboard" : "/profile";
   return (
     <HeaderStyles>
       <div className="container">
@@ -128,9 +131,11 @@ const Header = () => {
                 type="button"
                 height="56px"
                 className="header-button"
-                to="/dashboard"
+                to={navigate}
               >
-                Dashboard
+                {Number(userInfo?.role) === roleStatus.ADMIN
+                  ? "Dashboard"
+                  : "Profile"}
               </Button>
             </div>
           )}
