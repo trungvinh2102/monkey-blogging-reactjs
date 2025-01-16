@@ -54,7 +54,6 @@ const UserUpdate = () => {
       });
       toast.success("Update user sucessfully!");
     } catch (error) {
-      console.log(error);
       toast.error("Updating a category failed!");
     }
   };
@@ -64,7 +63,6 @@ const UserUpdate = () => {
     async function fetchDataUser() {
       const colRef = doc(db, "users", userId);
       const singleDoc = await getDoc(colRef);
-      console.log(singleDoc.data());
       reset(singleDoc && singleDoc.data());
     }
     fetchDataUser();
@@ -86,10 +84,7 @@ const UserUpdate = () => {
   if (!userId) return null;
   return (
     <div>
-      <DashboardHeading
-        title="Người dùng"
-        desc="Chỉnh sửa thông tin người dùng"
-      ></DashboardHeading>
+      <DashboardHeading title="User" desc="Update user"></DashboardHeading>
       <div className="w-[200px] h-[200px] rounded-full mx-auto mb-10">
         <ImageUpload
           className="!rounded-full h-full"
@@ -102,11 +97,11 @@ const UserUpdate = () => {
       <form autoComplete="off" onSubmit={handleSubmit(handleUpdateUser)}>
         <div className="form-layout">
           <Field>
-            <Label>Họ và tên</Label>
+            <Label>Fullname</Label>
             <Input
               type="text"
               name="fullname"
-              placeholder="Nhập họ và tên"
+              placeholder="Enter your fullname"
               control={control}
             ></Input>
           </Field>
@@ -115,7 +110,7 @@ const UserUpdate = () => {
             <Input
               type="text"
               name="username"
-              placeholder="Nhập username"
+              placeholder="Enter your username"
               control={control}
             ></Input>
           </Field>
@@ -125,19 +120,20 @@ const UserUpdate = () => {
             <Label>Email</Label>
             <Input
               name="email"
-              placeholder="Nhập email"
+              placeholder="Enter your email"
               control={control}
               type="email"
+              disabled={true}
             ></Input>
           </Field>
           <Field>
-            <Label>Mật khẩu</Label>
+            <Label>Password</Label>
             <InputTogglePassword control={control}></InputTogglePassword>
           </Field>
         </div>
         <div className="form-layout">
           <Field>
-            <Label>Trạng thái</Label>
+            <Label>Status</Label>
             <FieldCheckboxes>
               <Radio
                 name="status"
@@ -166,7 +162,7 @@ const UserUpdate = () => {
             </FieldCheckboxes>
           </Field>
           <Field>
-            <Label>Phân quyền</Label>
+            <Label>Role</Label>
             <FieldCheckboxes>
               <Radio
                 name="role"
@@ -203,9 +199,9 @@ const UserUpdate = () => {
             </FieldCheckboxes>
           </Field>
         </div>
-        <div className="form-layout">
+        <div>
           <Field>
-            <Label>Chú thích</Label>
+            <Label>Note</Label>
             <Textarea name="description" control={control}></Textarea>
           </Field>
         </div>
@@ -216,7 +212,7 @@ const UserUpdate = () => {
           disabled={isSubmitting}
           isLoading={isSubmitting}
         >
-          Chỉnh sửa người dùng
+          Update User
         </Button>
       </form>
     </div>

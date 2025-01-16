@@ -2,6 +2,9 @@ import styled from "styled-components";
 import { useAuth } from "../../contexts/auth-context";
 import { Link, NavLink } from "react-router-dom";
 import { Button } from "../../components/button";
+import { roleStatus } from "../../utils/constants";
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebase-app/firebase-config";
 
 const DashboardHeaderStyles = styled.div`
   background-color: white;
@@ -47,9 +50,20 @@ const DashboardHeader = () => {
         <span className="hidden lg:inline-block">Monkey Blogging</span>
       </NavLink>
       <div className="header-right">
-        <Button to="/manage/add-post" className="header-button" height="52px">
-          Thêm bài viết
-        </Button>
+        {Number(userInfo.role) === roleStatus.ADMIN ? (
+          <Button to="/manage/add-post" className="header-button" height="52px">
+            Add New Post
+          </Button>
+        ) : (
+          <Button
+            onClick={() => signOut(auth)}
+            className="header-button"
+            height="52px"
+          >
+            Logout
+          </Button>
+        )}
+
         <Link to={`/profile?`} className="header-avatar">
           <img src={userInfo?.avatar} alt="" />
         </Link>

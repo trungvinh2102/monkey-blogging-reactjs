@@ -23,7 +23,7 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "../../contexts/auth-context";
 import { roleStatus } from "../../utils/constants";
 
-const CATEGORY_PER_PAGE = 2;
+const CATEGORY_PER_PAGE = 10;
 
 const CategoryManage = () => {
   //
@@ -46,10 +46,10 @@ const CategoryManage = () => {
       const colRef = collection(db, "categories");
       const queries = filter
         ? query(
-          colRef,
-          where("name", ">=", filter),
-          where("name", "<=", filter + "utf8")
-        )
+            colRef,
+            where("name", ">=", filter),
+            where("name", "<=", filter + "utf8")
+          )
         : query(colRef, limit(CATEGORY_PER_PAGE));
       const documentSnapshots = await getDocs(queries);
       const lastVisible =
@@ -79,19 +79,19 @@ const CategoryManage = () => {
   const handleDeleteCategory = (docId) => {
     const colRef = doc(db, "categories", docId);
     Swal.fire({
-      title: "Bạn có muốn xóa danh mục này không?",
-      text: "Khi đã xóa bạn không thể hoàn tác lại!",
+      title: "Do you want to delete this category??",
+      text: "Once deleted you cannot undo it.!",
       icon: "warning",
       showCancelButton: true,
-      cancelButtonText: "Hủy",
+      cancelButtonText: "Cancel",
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Xóa",
+      confirmButtonText: "Delete",
     }).then(async (result) => {
       if (result.isConfirmed) {
         await deleteDoc(colRef);
         Swal.fire({
-          title: "Xóa bài viết thành công!",
+          title: "Delete category successfully!",
           icon: "success",
         });
       }
@@ -122,20 +122,20 @@ const CategoryManage = () => {
 
   //
   const { userInfo } = useAuth();
-  if (userInfo.role !== roleStatus.ADMIN) return null;
+  if (Number(userInfo.role) !== roleStatus.ADMIN) return null;
 
   return (
     <div>
-      <DashboardHeading title="Danh mục" desc="Quản lí danh mục">
+      <DashboardHeading title="Categories" desc="Category Manager">
         <Button type="button" to="/manage/add-category" kind="ghost">
-          Thêm danh mục
+          Add Category
         </Button>
       </DashboardHeading>
       <div className="mb-10 ml-auto w-[220px]">
         <input
           className="px-5 py-4 border rounded-lg border-primary"
           type="text"
-          placeholder="Tìm kiếm danh mục..."
+          placeholder="Enter category name..."
           onChange={handleInputFilter}
         />
       </div>
@@ -143,10 +143,10 @@ const CategoryManage = () => {
         <thead>
           <tr>
             <th>Id</th>
-            <th>Tên danh mục</th>
+            <th>Category name</th>
             <th>Slug</th>
-            <th>Trạng thái</th>
-            <th>Hành động</th>
+            <th>Status</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -193,7 +193,7 @@ const CategoryManage = () => {
             isLoading={isSubmitting}
             onClick={handleLoadMoreCategory}
           >
-            Xem thêm
+            See more
           </Button>
         </div>
       )}

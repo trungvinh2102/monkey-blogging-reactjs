@@ -39,7 +39,7 @@ const CategoryAddNew = () => {
         ...newValues,
         createdAt: serverTimestamp(),
       });
-      toast.success("Thêm danh mục thành công!");
+      toast.success("Add category successfully!");
       reset({
         name: "",
         slug: "",
@@ -47,25 +47,22 @@ const CategoryAddNew = () => {
       });
     } catch (error) {
       console.log(error);
-      toast.error("Thêm danh mục không thành công!");
+      toast.error("Add category unsuccessfully!");
     }
   };
   const watchStatus = watch("status");
   return (
     <>
-      <DashboardHeading
-        title="Danh mục"
-        desc="Thêm mới danh mục"
-      ></DashboardHeading>
+      <DashboardHeading title="Category" desc="Add category"></DashboardHeading>
       <form autoComplete="off" onSubmit={handleSubmit(handleAddNewCategory)}>
         <div className="form-layout">
           <Field>
-            <Label>Tên danh mục</Label>
+            <Label>Category name</Label>
             <Input
               type="text"
               control={control}
               name="name"
-              placeholder="Nhập tên danh mục"
+              placeholder="Enter your category name"
               required
             ></Input>
           </Field>
@@ -109,7 +106,7 @@ const CategoryAddNew = () => {
           disabled={isSubmitting}
           isLoading={isSubmitting}
         >
-          Thêm danh mục
+          Add Category
         </Button>
       </form>
     </>

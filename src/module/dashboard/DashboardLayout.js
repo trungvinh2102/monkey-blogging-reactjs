@@ -44,7 +44,7 @@ const DashboardLayout = () => {
   return (
     <DashboardStyles>
       <DashboardHeader></DashboardHeader>
-      {userInfo.role === roleStatus.ADMIN ? (
+      {Number(userInfo.role) === roleStatus.ADMIN ? (
         <div className="dashboard-main">
           <Sidebar></Sidebar>
           <div className="dashboard-children">

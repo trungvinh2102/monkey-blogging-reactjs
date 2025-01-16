@@ -75,9 +75,7 @@ const UserAddNew = () => {
         role: Number(values.role),
         createdAt: serverTimestamp(),
       });
-      toast.success(
-        `Thêm người dùng bằng email: ${values.email} thành công!`
-      );
+      toast.success(`Add new user with email: ${values.email} successfully!`);
       // reset form to default value
       reset({
         fullname: "",
@@ -97,10 +95,7 @@ const UserAddNew = () => {
   return (
     <>
       {/* heading */}
-      <DashboardHeading
-        title="Người dùng"
-        desc="Thêm người dùng"
-      ></DashboardHeading>
+      <DashboardHeading title="User" desc="Add new user"></DashboardHeading>
       {/* image */}
       <div className="w-[200px] h-[200px] rounded-full mx-auto mb-10">
         <ImageUpload
@@ -115,11 +110,11 @@ const UserAddNew = () => {
       <form autoComplete="off" onSubmit={handleSubmit(handleAddNewUser)}>
         <div className="form-layout">
           <Field>
-            <Label>Họ và tên</Label>
+            <Label>Fullname</Label>
             <Input
               type="text"
               name="fullname"
-              placeholder="Nhập họ và tên"
+              placeholder="Enter your fullname"
               control={control}
             ></Input>
           </Field>
@@ -128,7 +123,7 @@ const UserAddNew = () => {
             <Input
               type="text"
               name="username"
-              placeholder="Nhập username"
+              placeholder="Enter your username"
               control={control}
             ></Input>
           </Field>
@@ -138,19 +133,19 @@ const UserAddNew = () => {
             <Label>Email</Label>
             <Input
               name="email"
-              placeholder="Nhập email"
+              placeholder="Enter your email"
               control={control}
               type="email"
             ></Input>
           </Field>
           <Field>
-            <Label>Mật khẩu</Label>
+            <Label>Password</Label>
             <InputTogglePassword control={control}></InputTogglePassword>
           </Field>
         </div>
         <div className="form-layout">
           <Field>
-            <Label>Trạng thái</Label>
+            <Label>Status</Label>
             <FieldCheckboxes>
               <Radio
                 name="status"
@@ -179,7 +174,7 @@ const UserAddNew = () => {
             </FieldCheckboxes>
           </Field>
           <Field>
-            <Label>Phân quyền</Label>
+            <Label>Role</Label>
             <FieldCheckboxes>
               <Radio
                 name="role"

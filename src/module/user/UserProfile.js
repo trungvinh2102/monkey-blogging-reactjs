@@ -10,12 +10,12 @@ import useFirebaseImage from "../../hooks/useFirebaseImage";
 import ImageUpload from "../../components/image/ImageUpload";
 import { db } from "../../firebase-app/firebase-config";
 import InputTogglePassword from "../../components/input/InputTogglePassword";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { toast } from "react-toastify";
 
 const UserProfile = () => {
   const { userInfo } = useAuth();
-  console.log(userInfo);
-
+  const userId = userInfo?.user?.uid;
   const {
     setValue,
     getValues,
@@ -34,6 +34,15 @@ const UserProfile = () => {
   const { image, setImage, progress, handleDeleteAvatar, handleSelectImage } =
     useFirebaseImage(setValue, getValues, imageName, deleteAvatar);
 
+  useEffect(() => {
+    async function fetchDataUser() {
+      const colRef = doc(db, "users", userId);
+      const singleDoc = await getDoc(colRef);
+      reset(singleDoc && singleDoc.data());
+    }
+    fetchDataUser();
+  }, [userId, reset]);
+
   //
   useEffect(() => {
     setImage(imageUrl);
@@ -47,16 +56,18 @@ const UserProfile = () => {
     });
   }
 
-  //
-  useEffect(() => {
-    function fetchData() {
-      reset(userInfo);
-    }
-    fetchData();
-  }, [userInfo, reset]);
-
-  const handleUpdateProfile = () => {
+  const handleUpdateProfile = async (values) => {
     if (!isValid) return;
+    try {
+      const colRef = doc(db, "users", userId);
+      await updateDoc(colRef, {
+        ...values,
+        avatar: image,
+      });
+      toast.success("Update user sucessfully!");
+    } catch (error) {
+      toast.error("Updating a category failed!");
+    }
   };
 
   return (
@@ -105,6 +116,7 @@ const UserProfile = () => {
               name="email"
               placeholder="Enter your email"
               control={control}
+              disabled={true}
               type="email"
             ></Input>
           </Field>

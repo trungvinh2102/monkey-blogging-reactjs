@@ -10,7 +10,15 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import useFirebaseImage from "../../hooks/useFirebaseImage";
-import { collection, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { db } from "../../firebase-app/firebase-config";
 import { imgbbAPI } from "../../config/apiConfig";
 import DashboardHeading from "../dashboard/DashboardHeading";
@@ -25,9 +33,8 @@ import { Radio } from "../../components/checkbox";
 import { Button } from "../../components/button";
 Quill.register("modules/imageUploader", ImageUploader);
 
-
 const PostUpdate = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { userInfo } = useAuth();
   const [params] = useSearchParams();
   const postId = params.get("id");
@@ -48,7 +55,7 @@ const PostUpdate = () => {
   const { image, setImage, progress, handleSelectImage, handleDeleteImage } =
     useFirebaseImage(setValue, getValues, imageName, deletePostImage);
   async function deletePostImage() {
-    if (userInfo?.role !== userStatus.ADMIN) {
+    if (Number(userInfo?.role) != userStatus.ADMIN) {
       Swal.fire("Failed", "You have no right to do this action", "warning");
       return;
     }
@@ -105,8 +112,12 @@ const PostUpdate = () => {
   };
   const updatePostHandler = async (values) => {
     if (!isValid) return;
-    if (userInfo?.role !== roleStatus.ADMIN) {
-      Swal.fire("Chỉnh sửa không thành công!", "Bạn không có quyền thực hiện hành động này", "warning");
+    if (Number(userInfo?.role) !== roleStatus.ADMIN) {
+      Swal.fire(
+        "Update post failed!",
+        "You have no right to do this action",
+        "warning"
+      );
       return;
     }
     const docRef = doc(db, "posts", postId);
@@ -117,8 +128,8 @@ const PostUpdate = () => {
       image,
       content,
     });
-    toast.success("Chỉnh sửa bài viết thành công!");
-    navigate('/manage/posts')
+    toast.success("Update post successfully!");
+    navigate("/manage/posts");
   };
   const modules = useMemo(
     () => ({
@@ -152,17 +163,14 @@ const PostUpdate = () => {
   if (!postId) return null;
   return (
     <>
-      <DashboardHeading
-        title="Chỉnh sửa bài viết"
-        desc="Chỉnh sửa nội dung bài viết"
-      ></DashboardHeading>
+      <DashboardHeading title="Post" desc="Post update"></DashboardHeading>
       <form onSubmit={handleSubmit(updatePostHandler)}>
         <div className="form-layout">
           <Field>
-            <Label>Tiêu đề</Label>
+            <Label>Title</Label>
             <Input
               control={control}
-              placeholder="Nhập tiêu đề"
+              placeholder="Enter your title"
               name="title"
               required
             ></Input>
@@ -171,14 +179,14 @@ const PostUpdate = () => {
             <Label>Slug</Label>
             <Input
               control={control}
-              placeholder="Nhập slug"
+              placeholder="Enter your slug"
               name="slug"
             ></Input>
           </Field>
         </div>
         <div className="form-layout">
           <Field>
-            <Label>Hình ảnh</Label>
+            <Label>Image</Label>
             <ImageUpload
               onChange={handleSelectImage}
               handleDeleteImage={handleDeleteImage}
@@ -188,9 +196,9 @@ const PostUpdate = () => {
             ></ImageUpload>
           </Field>
           <Field>
-            <Label>Danh mục</Label>
+            <Label>Category</Label>
             <Dropdown>
-              <Dropdown.Select placeholder="Lựa chọn danh mục..."></Dropdown.Select>
+              <Dropdown.Select placeholder="Select a category..."></Dropdown.Select>
               <Dropdown.List>
                 {categories.length > 0 &&
                   categories.map((item) => (
@@ -212,7 +220,7 @@ const PostUpdate = () => {
         </div>
         <div className="mb-10">
           <Field>
-            <Label>Nội dung</Label>
+            <Label>Content</Label>
             <div className="w-full entry-content">
               <ReactQuill
                 modules={modules}
@@ -225,14 +233,14 @@ const PostUpdate = () => {
         </div>
         <div className="form-layout">
           <Field>
-            <Label>Bài viết nổi bật</Label>
+            <Label>Post Featured</Label>
             <Toggle
               on={watchHot === true}
               onClick={() => setValue("hot", !watchHot)}
             ></Toggle>
           </Field>
           <Field>
-            <Label>Trạng thái</Label>
+            <Label>Status</Label>
             <FieldCheckboxes>
               <Radio
                 name="status"
@@ -267,12 +275,11 @@ const PostUpdate = () => {
           isLoading={isSubmitting}
           disabled={isSubmitting}
         >
-          Chỉnh sửa
+          Update
         </Button>
       </form>
     </>
   );
 };
-
 
 export default PostUpdate;

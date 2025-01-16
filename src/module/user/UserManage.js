@@ -8,12 +8,12 @@ import { roleStatus } from "../../utils/constants";
 const UserManage = () => {
   //
   const { userInfo } = useAuth();
-  if (userInfo.role !== roleStatus.ADMIN) return null;
+  if (Number(userInfo.role) !== roleStatus.ADMIN) return null;
   return (
     <div>
-      <DashboardHeading title="Người dùng" desc="Quản lí người dùng">
+      <DashboardHeading title="Users" desc="User manager">
         <Button type="button" to="/manage/add-user" kind="ghost">
-          Thêm người dùng
+          Add new user
         </Button>
       </DashboardHeading>
       <UserTable></UserTable>

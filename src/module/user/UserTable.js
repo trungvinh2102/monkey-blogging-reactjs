@@ -19,7 +19,7 @@ import Swal from "sweetalert2";
 import { Button } from "../../components/button";
 import { useForm } from "react-hook-form";
 
-const USER_PER_PAGE = 2;
+const USER_PER_PAGE = 10;
 
 const UserTable = () => {
   //
@@ -95,19 +95,19 @@ const UserTable = () => {
   const handleDeleteUser = (docId) => {
     const colRef = doc(db, "users", docId);
     Swal.fire({
-      title: "Bạn có muốn xóa người dùng này không?",
-      text: "Khi đã xóa bạn không thể hoàn tác lại!",
+      title: "Do you want to delete this user??",
+      text: "Once deleted you cannot undo it.!",
       icon: "warning",
       showCancelButton: true,
-      cancelButtonText: "Hủy",
+      cancelButtonText: "Cancel",
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Xóa",
+      confirmButtonText: "Delete",
     }).then(async (result) => {
       if (result.isConfirmed) {
         await deleteDoc(colRef);
         Swal.fire({
-          title: "Xóa bài viết thành công!",
+          title: "Delete user successfully!",
           icon: "success",
         });
       }
@@ -143,12 +143,12 @@ const UserTable = () => {
         <thead>
           <tr>
             <th>Id</th>
-            <th>Thông tin người dùng</th>
+            <th>User infomation</th>
             <th>Username</th>
             <th>Email</th>
-            <th>Trạng thái</th>
-            <th>Quyền</th>
-            <th>Hàng động</th>
+            <th>Status</th>
+            <th>Role</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -207,7 +207,7 @@ const UserTable = () => {
             isLoading={isSubmitting}
             onClick={handleLoadMoreUser}
           >
-            Xem thêm
+            See more
           </Button>
         </div>
       )}
